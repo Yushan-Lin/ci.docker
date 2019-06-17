@@ -74,7 +74,13 @@ if [ "$JMS_ENDPOINT" == "true" ]; then
 fi
 
 # Install needed features
-installUtility install --acceptLicense defaultServer || if [ $? -ne 22 ]; then exit $?; fi
+if [ "$FEATURE_REPO_URL" ]; then
+  curl -k --fail $FEATURE_REPO_URL > /tmp/repo.zip
+  installUtility install --acceptLicense defaultServer --from=/tmp/repo.zip || if [ $? -ne 22 ]; then exit $?; fi
+  rm -rf /tmp/repo.zip
+else
+  installUtility install --acceptLicense defaultServer || if [ $? -ne 22 ]; then exit $?; fi
+fi
 
 # Apply interim fixes found in /opt/ibm/fixes
 # Fixes recommended by IBM, such as to resolve security vulnerabilities, are also included in /opt/ibm/fixes

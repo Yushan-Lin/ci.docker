@@ -73,9 +73,15 @@ if [ "$JMS_ENDPOINT" == "true" ]; then
   fi
 fi
 
-
 # Install needed features
-installUtility install --acceptLicense defaultServer || if [ $? -ne 22 ]; then exit $?; fi
+if [ "$FEATURE_REPO_URL" ]; then
+  curl -k --fail $FEATURE_REPO_URL > /tmp/repo.zip
+  installUtility install --acceptLicense defaultServer --from=/tmp/repo.zip || if [ $? -ne 22 ]; then exit $?; fi
+  rm -rf /tmp/repo.zip
+else
+  installUtility install --acceptLicense defaultServer || if [ $? -ne 22 ]; then exit $?; fi
+fi
+
 #Make sure that group write permissions are set correctly after installing new features 
 find /opt/ibm/wlp -perm -g=w -print0 | xargs -0 -r chmod -R g+rw
 # Server start/stop to populate the /output/workarea and make subsequent server starts faster
