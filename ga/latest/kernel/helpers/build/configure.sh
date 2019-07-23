@@ -23,6 +23,11 @@ if [ "$MP_MONITORING" == "true" ]; then
   cp $SNIPPETS_SOURCE/mp-monitoring.xml $SNIPPETS_TARGET/mp-monitoring.xml
 fi
 
+# MicroProfile Monitoring 2.0
+if [ "$MP_MONITORING20" == "true" ]; then
+  cp $SNIPPETS_SOURCE/mp-monitoring20.xml $SNIPPETS_TARGET/mp-monitoring20.xml
+fi
+
 # OpenIdConnect Client
 if [ "$OIDC" == "true" ]  || [ "$OIDC_CONFIG" == "true" ]
 then
